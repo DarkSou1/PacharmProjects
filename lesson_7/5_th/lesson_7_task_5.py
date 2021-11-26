@@ -26,4 +26,4 @@ for item in os.scandir(r'C:\Users\Артём\PycharmProjects'):
                 ext_list.append(ext)
         except (KeyError, IndexError):
             size_stats[threshold] = [1, [ext]]
-print(size_stats)
+print(size_stats, 1)
