@@ -1,22 +1,13 @@
-# *(вместо 1) Написать регулярное выражение для парсинга файла логов web-сервера из ДЗ 6
-# урока nginx_logs.txt
-# (https://github.com/elastic/examples/raw/master/Common%20Data%20Formats/nginx_logs/nginx_logs
-# ) для получения информации вида: (<remote_addr>, <request_datetime>,
-# <request_type>, <requested_resource>, <response_code>, <response_size>),
-# например:
-# raw = '188.138.60.101 - - [17/May/2015:08:05:49 +0000] "GET
-# /downloads/product_2 HTTP/1.1" 304 0 "-" "Debian APT-HTTP/1.3 (0.9.7.9)"'
-# parsed_raw = ('188.138.60.101', '17/May/2015:08:05:49 +0000', 'GET', '/downloads/product_2', '304', '0')
-import re
 import json
-import requests
 import os
+import re
+import requests
 
 
 def logs_create(file_name, url):
     """
     Create file with logs from url_adress
-    :param args: file_name
+    :param file_name: file_name
     :return: None
     """
     with open(file_name, 'w', encoding='utf-8') as f:
@@ -36,9 +27,21 @@ def re_parser(arg):
     with open(arg, 'r', encoding='utf-8') as f:
         gen_line = f.read()
         gen_line = json.loads(gen_line)
-        RE_ADDR = re.compile(r'(?:[\d+[\.]+\d{2,4}[\.]+\d+[\.]+\d)')
         for item in gen_line:
-            print(RE_ADDR.findall(item))
+            try:
+                RE_RESPONSE_SIZE = re.search(r'(\d{3}\s+\d)', item)
+                RE_ADDR = re.search(r'(?:[\d{1,4}+[.]+\d{1,4}[.]+\d{1,4}[.]+\d{1,4})', item)
+                RE_DATETIME = re.search(r'(\d{2}/\w+/\w+:\w{2,}:\w{2,}:\w{2,}\s\+\w+)', item)
+                RE_REQUEST_TYPE = re.search(r'([A-Z]{3})+[\s]', item)
+                RE_RESOURSE = re.search(r'(/+\w+/+\w+_\d+)', item)
+                tuple_response = (RE_ADDR.group(0), RE_DATETIME.group(0), RE_REQUEST_TYPE.group(0),
+                                  RE_RESOURSE.group(0), RE_RESPONSE_SIZE.group(0))
+                print(tuple_response)
+            except:  # перехватывает не валидные логи и создаёт отдельный файл для просмотра
+                with open('non_valide.json', 'a', encoding='utf-8') as f:
+                    non_valid_list = []
+                    non_valid_list.append(item)
+                    f.writelines(json.dumps(non_valid_list))
 
 
 if __name__ == '__main__':
