@@ -14,14 +14,17 @@
 # ValueError: wrong val -5
 # Примечание: сможете ли вы замаскировать работу декоратора?
 def val_checker(func):
-    print(func, 'декорируемая функция')
 
     def _val_checker(args):
         nonlocal func
-        print(func.__name__, 'декоратор', args.__name__,'вызванная функция')
 
         def wrapper(*args, **kwargs):
-            print(args, kwargs)
+            print(func)
+            try:
+                valid_args = list(map(func, args))
+                print(valid_args)
+            except ValueError as e:
+                print(f'{e}: {args} < 0')
         return wrapper
 
     return _val_checker
