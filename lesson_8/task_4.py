@@ -18,6 +18,6 @@ def val_checker(func):  # декорирующая функция с аргум�
 def calc_cube(x):
     return print(x ** 3)
 
-
-calc_cube(5)
-calc_cube(-5)
+if __name__ == '__main__':
+    calc_cube(5)
+    calc_cube(-5)
