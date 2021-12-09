@@ -1,30 +1,14 @@
-# Написать декоратор с аргументом-функцией (callback), позволяющий валидировать входные
-# значения функции и выбрасывать исключение ValueError, если что-то не так, например:
-# def val_checker...
-# ...
-# @val_checker(lambda x: x > 0)
-# def calc_cube(x):
-# return x ** 3
-# >>> a = calc_cube(5)
-# 125
-# >>> a = calc_cube(-5)
-# Traceback (most recent call last):
-# ...
-# raise ValueError(msg)
-# ValueError: wrong val -5
-# Примечание: сможете ли вы замаскировать работу декоратора?
-def val_checker(func):
+def val_checker(func):  # декорирующая функция с аргументом лямбда функции
 
-    def _val_checker(args):
+    def _val_checker(calk):  # функция с аргументом основной функции
         nonlocal func
 
-        def wrapper(*args, **kwargs):
-            print(func)
-            try:
-                valid_args = list(map(func, args))
-                print(valid_args)
-            except ValueError as e:
-                print(f'{e}: {args} < 0')
+        def wrapper(*x, **kwargs):  # фунция с аргументом (который передан основной функции)
+            valid_x = func(*x)  # проверка валидности входных данных
+            if valid_x:
+                calk(*x)
+            else:
+                raise ValueError(f'ValueError : wrong val {x[0]}')
         return wrapper
 
     return _val_checker
@@ -32,7 +16,8 @@ def val_checker(func):
 
 @val_checker(lambda x: x > 0)
 def calc_cube(x):
-    return x ** 3
+    return print(x ** 3)
 
 
 calc_cube(5)
+calc_cube(-5)
