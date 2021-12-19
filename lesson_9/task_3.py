@@ -11,9 +11,6 @@ class Worker:
 
 class Position(Worker):
 
-    def __init__(self, name, surname, position, _income):
-        super().__init__(name, surname, position, _income)
-
     def get_full_name(self):
         print(self.name, self.surname)
 

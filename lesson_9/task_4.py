@@ -12,20 +12,17 @@ class Car(object):  # базовый класс
         print(f'{self.name} машина поехала')
 
     def stop(self):
-        print(f'{self.name}машина остановилась')
+        print(f'{self.name} машина остановилась')
 
     def turn(self, direction):
         self.direction = direction
         print(f'машина повернула {self.direction}')
 
     def show_speed(self, speed):
-        print()
+        print(self.speed)
 
 
 class TownCar(Car):
-
-    def __init__(self, speed, color, name, is_polise=False):
-        super().__init__(speed, color, name, is_polise=False)
 
     def show_speed(self):  # переопределённый метод
         if self.speed > 60:
@@ -34,36 +31,29 @@ class TownCar(Car):
 
 class WorkCar(Car):
 
-    def __init__(self, speed, color, name, is_polise=False):
-        super().__init__(speed, color, name, is_polise=False)
-
     def show_speed(self):
         if self.speed > 40:
             print(f'превышение скорости!')
 
 
 class SportCar(Car):
-
-    def __init__(self, speed, color, name, is_polise=False):
-        super().__init__(speed, color, name, is_polise=False)
+    pass
 
 
 class PoliseCar(Car):
-
-    def __init__(self, speed, color, name, is_polise=False):
-        super().__init__(speed, color, name, is_polise=False)
+    pass
 
 
 if __name__ == '__main__':
-    a = TownCar(55, 'green', 'Lexus', is_polise=False)
-    a.show_speed()
-    print(a.speed)
-    print(a.name)
-    print(a.color)
-    print(a.is_polise)
-    b = WorkCar(45, 'red', 'Lada', is_polise=False)
-    b.go()
-    b.turn('налево')
-    b.stop()
-    b.show_speed()
+    lexus = TownCar(55, 'green', 'Lexus', is_polise=False)
+    lexus.show_speed()
+    print(lexus.speed)
+    print(lexus.name)
+    print(lexus.color)
+    print(lexus.is_polise)
+    lada = WorkCar(45, 'red', 'Lada', is_polise=False)
+    lada.go()
+    lada.turn('налево')
+    lada.stop()
+    lada.show_speed()
     print(Car.count)
